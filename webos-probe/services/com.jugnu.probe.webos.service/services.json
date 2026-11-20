@@ -1,0 +1,7 @@
+{
+  "id": "com.jugnu.probe.webos.service",
+  "description": "Jugnu test helper service",
+  "services": [
+    { "name": "com.jugnu.probe.webos.service", "description": "Jugnu test helper service" }
+  ]
+}

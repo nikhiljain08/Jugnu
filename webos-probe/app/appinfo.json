@@ -1,0 +1,13 @@
+{
+  "id": "com.jugnu.probe.webos",
+  "version": "0.0.1",
+  "vendor": "buxduckslabs",
+  "type": "web",
+  "main": "index.html",
+  "title": "Jugnu Test",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "resolution": "1920x1080",
+  "disallowScrollingInMainFrame": true,
+  "requiredACG": []
+}

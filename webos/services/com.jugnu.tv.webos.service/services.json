@@ -1,0 +1,7 @@
+{
+  "id": "com.jugnu.tv.webos.service",
+  "description": "Jugnu helper service",
+  "services": [
+    { "name": "com.jugnu.tv.webos.service", "description": "Jugnu helper service" }
+  ]
+}

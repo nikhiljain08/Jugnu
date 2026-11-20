@@ -1,0 +1,10 @@
+{
+  "name": "jugnu-webos",
+  "private": true,
+  "version": "0.3.0",
+  "scripts": {
+    "stage": "node stage.mjs",
+    "package": "cd ../web && npm run build -- --min && cd ../webos && npm run stage && ares-package app services/com.jugnu.tv.webos.service --outdir out --no-minify"
+  },
+  "devDependencies": { "@webos-tools/cli": "^3.2.0" }
+}

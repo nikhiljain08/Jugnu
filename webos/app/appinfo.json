@@ -1,0 +1,13 @@
+{
+  "id": "com.jugnu.tv.webos",
+  "version": "0.3.0",
+  "vendor": "buxduckslabs",
+  "type": "web",
+  "main": "index.html",
+  "title": "Jugnu",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "resolution": "1920x1080",
+  "disallowScrollingInMainFrame": true,
+  "requiredACG": []
+}

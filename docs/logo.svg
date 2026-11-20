@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Jugnu">
+  <rect width="160" height="160" rx="36" fill="#0b0c10"/>
+  <g transform="translate(20 22) scale(1.88)">
+<defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe45c" stop-opacity=".85"/><stop offset=".45" stop-color="#ffc83a" stop-opacity=".3"/><stop offset="1" stop-color="#ffc83a" stop-opacity="0"/></radialGradient><radialGradient id="b" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#fffbe0"/><stop offset=".6" stop-color="#ffd23f"/><stop offset="1" stop-color="#f5a623"/></radialGradient></defs>
+<circle cx="32" cy="40" r="26" fill="url(#g)"/>
+<g fill="#cfe6ff" fill-opacity=".55" stroke="#cfe6ff" stroke-opacity=".8" stroke-width=".8"><ellipse cx="21" cy="25" rx="11" ry="5" transform="rotate(-35 21 25)"/><ellipse cx="43" cy="25" rx="11" ry="5" transform="rotate(35 43 25)"/></g>
+<g stroke="#f5f6f8" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M30 17q-3-5-7-6"/><path d="M34 17q3-5 7-6"/></g>
+<circle cx="32" cy="20" r="4" fill="#f5f6f8"/><rect x="28.5" y="22" width="7" height="12" rx="3.5" fill="#f5f6f8"/>
+<ellipse cx="32" cy="42" rx="8.5" ry="11" fill="url(#b)"/>
+  </g>
+</svg>
