@@ -20,7 +20,7 @@ cpSync(join(here, 'template'), stage, { recursive: true })
 
 // portable Node (the same official build that runs this script)
 mkdirSync(join(stage, 'tools'), { recursive: true })
-cpSync(process.execPath, join(stage, 'tools', 'node.exe'))
+cpSync(process.env.NODE_EXE || process.execPath, join(stage, 'tools', 'node.exe')) // NODE_EXE: a Windows node.exe when building off-Windows
 
 // LG's command-line tools, without the project templates and tests (only needed to create new projects)
 cpSync(cliSrc, join(stage, 'tools', 'cli'), { recursive: true, filter: (p) => !/[\\/]cli[\\/](files[\\/]templates|spec)([\\/]|$)/.test(p) })
@@ -30,7 +30,7 @@ cpSync(join(outDir, ipks[ipks.length - 1]), join(stage, 'app', ipks[ipks.length 
 writeFileSync(join(stage, 'tools', 'NODE-LICENSE.txt'), 'tools/node.exe is the official, unmodified Node.js build (https://nodejs.org), MIT licence: https://github.com/nodejs/node/blob/main/LICENSE\n')
 
 // zip (Python's zipfile: Windows' tar.exe crashes on this many files)
-execFileSync('python', ['-c', `
+execFileSync(process.env.PYTHON || 'python', ['-c', `
 import os, sys, zipfile
 src, out = sys.argv[1], sys.argv[2]
 base = os.path.dirname(src)

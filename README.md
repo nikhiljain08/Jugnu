@@ -101,7 +101,7 @@ SHA-256: `A7AC5B3E4947ABACFD5C499560930908A5D29509AFAEDF41E47A5E058D2E588B`. The
 
 Developer Mode needs an **Extend** every few weeks (`Extend Developer Mode.bat` does it). Full steps, troubleshooting and manual commands for Mac/Linux: **[docs/webos-install.md](docs/webos-install.md)**. A few DRM-protected Jio channels are not supported on webOS yet.
 
-SHA-256 of the zip: `8C4BFAD743C6A733C6569FBF8C8EF245FE72D91C9B798A8072B5E773517C10A0`.
+SHA-256 of the zip: `991F80CAFCF28FC818F8BA6E962BF175CAB6315717B5AB5B7A5B29B5E8145695`.
 
 ## Using the app
 
