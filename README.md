@@ -19,30 +19,6 @@ Browse channels by language, check what's on now and next, keep favourites, and 
 
 Jugnu is an **unofficial, independent client**. You sign in with your **own** Jio mobile number and one-time code, and it shows the channels that account is entitled to. It is not affiliated with, endorsed by or supported by Jio or its owners. You can also skip Jio and use only the free channels.
 
-## Screenshots
-
-Captured from the 0.3 app on an Android TV (1920×1080).
-
-| Home | Jio TV |
-|---|---|
-| ![Home](docs/screenshots/home.png) | ![Jio TV](docs/screenshots/live-tv.png) |
-
-| Free TV | HD |
-|---|---|
-| ![Free TV](docs/screenshots/free-tv.png) | ![HD](docs/screenshots/hd.png) |
-
-| Guide | Settings |
-|---|---|
-| ![Guide](docs/screenshots/guide.png) | ![Settings](docs/screenshots/settings.png) |
-
-| Star Plus HD (premium crown, guide, controls) | Sony Sports Ten 3 Hindi (free channel) |
-|---|---|
-| ![Player on Star Plus HD](docs/screenshots/player-star-plus.png) | ![Player on Sony Sports Ten 3 Hindi](docs/screenshots/player-sony-sports.png) |
-
-| About | Sign in |
-|---|---|
-| ![About](docs/screenshots/about.png) | ![Sign in](docs/screenshots/sign-in.png) |
-
 ## Contents
 
 - [Features](#features)
@@ -51,7 +27,7 @@ Captured from the 0.3 app on an Android TV (1920×1080).
 - [Build from source](#build-from-source)
 - [Project layout](#project-layout)
 - [How it works](#how-it-works)
-- [Known limits](#known-limits)
+- [Limitations](#limitations)
 - [Changelog](#changelog)
 - [Legal](#legal)
 - [License](#license)
@@ -175,31 +151,32 @@ web/                        Platform-neutral web app (TypeScript) used by the LG
 webos/                      LG webOS packaging: appinfo, helper service for stream keys, .ipk output
 webos-probe/                Small compatibility test app for real LG TVs
 installer/                  Builds the Windows one-click installer for the LG app
-docs/screenshots/           README images
 ```
 
 ## How it works
 
-- **Sign in.** The app sends your number to Jio's sign-in service, which texts you a code; the code is verified and the session tokens it returns are stored on the TV, in the app's private storage.
-- **Channel list and "your plan".** The app downloads the full channel list, then asks for each channel's stream the same way a playback request would. Channels that return a stream are the ones your account can watch; the rest (for example premium channels outside your plan) are hidden. This takes a minute or two on first launch.
-- **Free TV.** The India playlist (`https://iptv-org.github.io/iptv/countries/in.m3u`) is downloaded, cached for 6 hours and parsed into channels. Their streams are played directly with their own user agent and referrer where the playlist gives one; your Jio sign-in tokens are never sent to them. Free channels have no programme guide.
-- **Programme data.** Today's schedule per channel comes from Jio's guide service and is cached for two minutes.
-- **Playback.** Streams are played with ExoPlayer. While you watch, the next and previous channel are looked up in the background, so changing channel starts in well under a second.
-- **Playback (details).** Streams are played with ExoPlayer. Most channels are HLS; DASH channels use the TV's Widevine DRM. Two details matter: the stream host hands out a cookie that must be replayed on later requests, and the master playlists advertise I-frame (trick-play) playlists that the server refuses, which would stop playback, so `PlaylistFix.kt` removes those lines before parsing.
-- **The design.** The interface follows the "Jugnu" design board (a dark, white-focus system with a blue accent), scaled from a 1920×1080 canvas.
+- **Sign in.** You enter your own Jio mobile number. Jio's sign-in service texts you a one-time code. After you enter it, the session tokens Jio returns are stored in the app's private storage on the TV. There is no shared, demo or test login: Jugnu only ever uses the account you sign in with.
+- **Your channels.** The app downloads the full channel list, then asks for each channel's stream the way a playback request would. Channels that return a stream are the ones your account can watch; the rest (for example premium channels outside your plan) are hidden. This takes a minute or two on first launch. The result is remembered for 6 hours, and refused channels are retried after 10 minutes. **Refresh** re-checks everything.
+- **Free TV.** The India playlist (`https://iptv-org.github.io/iptv/countries/in.m3u`) is downloaded, cached for 6 hours and parsed into channels. Their streams play directly, with their own user agent and referrer where the playlist gives one. Your Jio tokens are never sent to them. Free channels have no programme guide.
+- **Programme guide.** Today's schedule per channel comes from Jio's guide service and is cached for two minutes.
+- **Playback.** Streams are played with ExoPlayer. Most channels are HLS; DASH channels use the TV's Widevine DRM. While you watch, the next and previous channel are looked up in the background, so changing channel starts in well under a second.
+- **Playback workarounds.** The stream host hands out a cookie that must be replayed on later requests. The master playlists also advertise I-frame (trick-play) playlists that the server refuses, which would stop playback, so `PlaylistFix.kt` removes those lines before parsing.
+- **Sessions.** When Jio answers 419 (access token expired), the app swaps the refresh token for a new one and retries. If that is rejected too, you sign in again.
+- **Design.** A dark interface with a white focus state and a blue accent, scaled from a 1920x1080 canvas. The logo is a firefly (a *jugnu*).
 
-## Known limits
+## Limitations
 
-- **Plan-gated channels.** About 195 of roughly 1,050 channels were refused for the account this was built and tested with, and are therefore hidden. A different account will see a different list.
-- **Free channels are not vetted.** The iptv-org list is community-maintained; links come and go, some are geo-blocked, and DRM-protected or YouTube-only entries are skipped or fail to play. Cleartext (`http://`) streams are allowed for this reason.
-- **Sessions.** When Jio answers 419 (access token expired) the app swaps the refresh token for a new one and retries. If that is rejected too, sign in again. Channels the server answers with "No eligible plans" are hidden; that depends on your Jio plan, not on the app.
+- **Unofficial.** Jugnu uses Jio's private service. Jio can change or block it at any time, which would break the app.
+- **Your plan decides the channels.** Channels outside your Jio plan are hidden. Different accounts see different lists.
+- **Free channels are not vetted.** The iptv-org list is community-maintained. Links come and go, some are geo-blocked, and DRM-protected or YouTube-only entries are skipped or fail to play. Cleartext (`http://`) streams are allowed for this reason.
+- **Free TV and languages.** The free playlist has no language information, so the language choice uses iptv-org's per-language lists. Free channels in none of them are hidden while a language is chosen. Choose *All languages* to see everything.
 - **Stream tokens expire.** The player reconnects up to twice on an error, then shows a retry card.
 - **Artwork is generated.** The service provides no programme stills, so cards use gradient artwork chosen per channel.
-- **Language names** (Hindi, English, Tamil and so on) are mapped from Jio's numeric language ids using public knowledge, not from official data. An unknown id shows as "Other".
-- **Untested areas.** Search with real input, the favourites grid in edit mode, DRM channels on every TV model, and most error states have had limited testing. It was tested on one Android 11 TV.
-- **Debug signing and no automated tests.**
-- **Updates.** The in-app updater needs each GitHub release to carry the APK, and only installs over the existing app when both are signed with the same key.
-- **Free TV and languages.** The free playlist has no language information, so the language choice is applied using iptv-org's per-language lists; free channels that are in none of them are hidden while a language is chosen. Choose *All languages* to see everything.
+- **Language names** (Hindi, English, Tamil and so on) are mapped from Jio's numeric language ids using public knowledge, not official data. An unknown id shows as "Other".
+- **LG webOS is a beta.** A few DRM-protected Jio channels are not supported there yet, and Developer Mode needs an *Extend* every few weeks. The installer is Windows-only.
+- **Limited testing.** There are no automated tests for the Android app. DRM channels and error states may behave differently on other TV models.
+- **Debug signing.** The APK is signed with the Android debug key and is not a Play Store build.
+- **Updates.** The in-app updater needs each GitHub release to carry the APK, and installs over the existing app only when both are signed with the same key.
 - **Not on the Play Store**, and not intended for it.
 
 ## Changelog
@@ -215,18 +192,16 @@ Latest releases (full history in [CHANGELOG.md](CHANGELOG.md)):
 ## Legal
 
 - Jugnu is a personal project for use with **your own subscription**. Use it only with an account you are entitled to use.
+- It is an **unofficial, independent client**, not affiliated with, endorsed by or supported by Jio or its owners.
 - It does **not** bypass payment, plan checks or DRM: channels outside your plan stay hidden, and protected streams are played through the TV's own Widevine.
-- The Free TV channels come from the third-party iptv-org project and belong to their broadcasters; Jugnu does not host or control them.
-- Jio, JioTV and related names and logos belong to their owners. Channel names, logos and programme titles shown in the screenshots belong to their broadcasters.
+- The Free TV channels come from the third-party iptv-org project and belong to their broadcasters. Jugnu does not host or control them.
+- Jio, JioTV and related names and logos belong to their owners. Channel names, logos and programme titles belong to their broadcasters.
 - Provided as is, with no warranty.
-
-## Credits
-
-- Interface, logo (the firefly mark), app icon and TV banner: made for Jugnu.
-- Studio name on the About screen: buxduckslabs, <https://buxduckslabs.in>.
 
 ## License
 
-Jugnu is released under the [MIT License](LICENSE). The licence covers the source code in this repository. It does not cover Jio, JioTV, channel names, logos or streams, which belong to their owners, nor the buxduckslabs studio name, which belongs to fortyseven.
+Jugnu is released under the [MIT License](LICENSE), copyright Buxducks Labs. The licence covers the source code in this repository. It does not cover Jio, JioTV, channel names, logos or streams, which belong to their owners.
 
 Third-party components keep their own licences: AndroidX Media3, OkHttp and AndroidX (Apache-2.0), hls.js (Apache-2.0), and the iptv-org playlists (Unlicense).
+
+Made by [buxduckslabs](https://buxduckslabs.in).
